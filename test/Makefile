@@ -28,9 +28,9 @@ OBJECTS_LIB        = $(SOURCES_LIB:.cpp=.o)
 
 EXECUTABLE_TARGET = 
 ifeq ($(MSYSTEM), MINGW64)
-	EXECUTABLE_TARGET = rim_test64.exe
+	EXECUTABLE_TARGET = ui_test64.exe
 else
-	EXECUTABLE_TARGET = rim_test64
+	EXECUTABLE_TARGET = ui_test64
 endif
 
 
