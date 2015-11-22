@@ -1,6 +1,14 @@
 CC             = g++
 INCLUDES       = -Iinclude
-CFLAGS         = $(INCLUDES) -c -Wall -pedantic -std=c++11 -fexec-charset=UTF-8 -finput-charset=UTF-8 -ggdb
+CFLAGS         = $(INCLUDES) -c -Wall -pedantic -std=c++11 -fexec-charset=UTF-8 -finput-charset=UTF-8
+ifdef RELEASE
+  CFLAGS += -O2
+endif
+
+ifndef RELEASE
+  CFLAGS += -gdb
+endif
+
 
 LIB_PATHS      = -Llib
 LIBS           = 
@@ -17,11 +25,6 @@ STATIC_TARGET     = lib/libendless_ui.a
 
 
 all: $(SOURCES) $(STATIC_TARGET) $(EXECUTABLE_TARGET)
-#	./$(EXECUTABLE_TARGET)
-
-
-$(EXECUTABLE_TARGET): $(OBJECTS)
-#	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
 
 $(STATIC_TARGET): $(OBJECTS_LIB)
