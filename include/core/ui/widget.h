@@ -34,33 +34,34 @@ namespace core {
       typedef glm::tvec2<std::int32_t, glm::precision::highp> vec2;
 
 
-      widget(vec2 position, vec2 size, std::uint32_t state = ACTIVE, std::uint32_t layer = 0)
-        :
-          m_position(position),
-          m_size(size),
-          m_state(state),
-          m_layer(layer)
-      {
-      }
+      widget(vec2 position, vec2 size, std::uint32_t parent_id = 0, std::uint32_t layer = 0, std::uint32_t state = ACTIVE);
       virtual ~widget() {}
       widget(widget const& rhs) = default;
       widget(widget && rhs) = default;
 
       widget& operator=(widget& rhs) = default;
+      widget& operator=(widget&&) = default;
 
       virtual void click() {};
       virtual void release() {};
-      virtual void enter() {};
-      virtual void leave() {};
+      virtual void focus() {};
+      virtual void blur() {};
+      virtual void move(vec2 delta) {
+        m_position += delta;
+      }
 
 
       protected:
 
 
+      static std::uint32_t s_widget_count;
+
       vec2 m_position;
       vec2 m_size;
-      std::uint32_t m_state;
+      std::uint32_t m_parent_id;
       std::uint32_t m_layer;
+      std::uint32_t m_state;
+      std::uint32_t m_id;
     };
 
   }
