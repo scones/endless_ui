@@ -6,12 +6,12 @@ ifdef RELEASE
 endif
 
 ifndef RELEASE
-  CFLAGS += -gdb
-endif
+  CFLAGS += -ggdb
+endif 
 
 
 LIB_PATHS      = -Llib
-LIBS           = 
+LIBS           =
 LDFLAGS        = ${LIB_PATHS} ${LIBS}
 MAKE           = mingw32-make
 
@@ -32,7 +32,7 @@ $(STATIC_TARGET): $(OBJECTS_LIB)
 
 
 check: $(STATIC_TARGET)
-	+$(MAKE) -C ./tests check
+	+$(MAKE) -C ./test check
 
 
 .cpp.o:
@@ -40,7 +40,7 @@ check: $(STATIC_TARGET)
 
 
 clean:
-	$(MAKE) -C ./tests clean
+	$(MAKE) -C ./test clean
 	rm -f $(OBJECTS_LIB)
 	rm -f $(OBJECTS)
 	rm -f $(STATIC_TARGET)
