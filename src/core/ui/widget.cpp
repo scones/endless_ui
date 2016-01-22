@@ -18,10 +18,12 @@ namespace core {
     std::uint32_t widget::s_widget_count = 0;
 
 
-    widget::widget(vec2 position, vec2 size, std::uint32_t parent_id, std::uint32_t layer, std::uint32_t state)
+    widget::widget(std::string id, vec2 const& position, vec2 const& size, std::string parent_id, vec4 const& color, std::uint32_t layer, std::uint32_t state)
       :
+        m_color(color),
         m_position(position),
         m_size(size),
+        m_id(id),
         m_parent_id(parent_id),
         m_layer(layer),
         m_state(state)

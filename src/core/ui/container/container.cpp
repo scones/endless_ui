@@ -13,9 +13,9 @@ namespace core {
 
   namespace ui {
 
-    container::container(vec2 position, vec2 size, std::uint32_t parent_id, std::uint32_t layer, std::uint32_t state, std::vector<widget*> widgets)
+    container::container(std::string id, vec2 const& position, vec2 const& size, std::string parent_id, std::uint32_t layer, std::uint32_t state, t_widget_map const& widgets)
       :
-        widget(position, size, parent_id, layer),
+        widget(id, position, size, parent_id, vec4(), layer),
         m_widgets(widgets)
     {}
   }

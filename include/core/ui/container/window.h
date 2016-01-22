@@ -35,3 +35,4 @@ namespace core {
 
 
 #endif /* INCLUDE_CORE_UI_CONTAINER_WINDOW_H_ */
+

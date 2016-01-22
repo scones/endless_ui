@@ -12,7 +12,7 @@
 #include "../widget.h"
 
 
-#include <vector>
+#include <unordered_map>
 
 
 namespace core {
@@ -24,13 +24,16 @@ namespace core {
       public:
 
 
-      container(vec2 position, vec2 size, std::uint32_t parent_id, std::uint32_t layer, std::uint32_t state, std::vector<widget*> widgets);
+      typedef std::unordered_map<std::string, widget*> t_widget_map;
+
+
+      container(std::string id, vec2 const&  position, vec2 const& size, std::string parent_id, std::uint32_t layer, std::uint32_t state, t_widget_map const& widgets);
 
 
       protected:
 
 
-      std::vector<widget*> m_widgets;
+      t_widget_map m_widgets;
     };
   }
 }
