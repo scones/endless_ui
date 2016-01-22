@@ -1,6 +1,6 @@
 CC             = g++
 INCLUDES       = -Iinclude
-CFLAGS         = $(INCLUDES) -c -Wall -pedantic -std=c++11 -fexec-charset=UTF-8 -finput-charset=UTF-8
+CFLAGS         = $(INCLUDES) -c -Wall -pedantic -std=c++14 -fexec-charset=UTF-8 -finput-charset=UTF-8 -fdiagnostics-color=auto
 ifdef RELEASE
   CFLAGS += -O2
 endif
@@ -27,7 +27,7 @@ STATIC_TARGET     = lib/libendless_ui.a
 .PHONY: all check example clean
 
 
-all: $(SOURCES) $(STATIC_TARGET) $(EXECUTABLE_TARGET)
+all: $(SOURCES) $(STATIC_TARGET) $(EXECUTABLE_TARGET) example
 
 
 $(STATIC_TARGET): $(OBJECTS_LIB)
@@ -48,6 +48,7 @@ example: $(STATIC_TARGET)
 
 clean:
 	$(MAKE) -C ./test clean
+	$(MAKE) -C ./example clean
 	rm -f $(OBJECTS_LIB)
 	rm -f $(OBJECTS)
 	rm -f $(STATIC_TARGET)
