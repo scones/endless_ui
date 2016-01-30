@@ -6,11 +6,17 @@
  */
 
 
+#include <iostream>
+#include <system_error>
+
+
 #include "core/window.h"
 #include "core/glfw.h"
+#include "core/file.h"
+#include "core/ui/widget.h"
 
 
-int main(void) {
+int main(int argc, char** argv) {
 
   core::glfw glfw;
   glfw.init();
@@ -25,6 +31,14 @@ int main(void) {
     {GLFW_CONTEXT_VERSION_MINOR, 5}
   });
   window.init();
+
+  std::string foo = core::file::content("data/script/window_example/main_window.json");
+
+  try {
+    core::ui::widget* x = core::ui::widget::parse_config(foo);
+  } catch (std::system_error const&) {
+    std::cout << "system_error" << std::endl;
+  }
 
   do {
     glfwPollEvents();
