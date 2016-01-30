@@ -1,0 +1,43 @@
+{
+  "id": "main_window",
+  "type": "window",
+  "position_x": 30,
+  "position_y": 100,
+  "state": 1,
+  "color": "00000000",
+  "size_x": 15,
+  "size_y": 100,
+  "children": [
+    {
+      "id": "ok_button",
+      "type": "button",
+      "position_x": 20,
+      "position_y": 20,
+      "size_x": 100,
+      "size_y": 50,
+      "color": "00ff0000",
+      "state": 1
+    },
+    {
+      "id": "hidden_button",
+      "type": "button",
+      "position_x": 18,
+      "position_y": 18,
+      "size_x": 1,
+      "size_y": 1,
+      "color": "00ff0000",
+      "state": 1
+    },
+    {
+      "id": "cancel_button",
+      "type": "button",
+      "position_x": 20,
+      "position_y": 140,
+      "size_x": 100,
+      "size_y": 50,
+      "color": "00ff0000",
+      "state": 1
+    }
+  ]
+}
+
