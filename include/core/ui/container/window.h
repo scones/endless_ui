@@ -21,7 +21,7 @@ namespace core {
       public:
 
 
-      window(core::support::duktape& duk, std::string const& parent_id = "");
+      window(core::support::duktape& duk, widget* parent);
 //      window(vec2 position, vec2 size, std::uint32_t parent_id, std::uint32_t layer, std::uint32_t state, std::vector<widget*> widgets);
       virtual ~window() = default;
 

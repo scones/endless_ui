@@ -24,12 +24,16 @@ namespace core {
       public:
 
 
-      typedef std::unordered_map<std::string, widget*> t_widget_map;
-
-
-      container(core::support::duktape& duk, std::string const& parent_id = "");
-//      container(std::string id, vec2 const&  position, vec2 const& size, std::string parent_id, std::uint32_t layer, std::uint32_t state, t_widget_map const& widgets);
+      container(core::support::duktape& duk, widget* parent = nullptr);
       virtual ~container() = default;
+
+
+      t_widget_vector get_all_widgets();
+
+
+      static container* parse_config(std::string const&);
+      static container* parse_widget(core::support::duktape&, widget* parent = nullptr);
+
 
       protected:
 

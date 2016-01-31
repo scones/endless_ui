@@ -13,7 +13,7 @@ namespace core {
 
   namespace ui {
 
-    window::window(core::support::duktape& duk, std::string const& parent_id) : container(duk, parent_id) {
+    window::window(core::support::duktape& duk, widget* parent) : container(duk, parent) {
     }
 
   }

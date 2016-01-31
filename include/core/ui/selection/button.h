@@ -21,7 +21,7 @@ namespace core {
       public:
 
 
-      button(core::support::duktape& duk, std::string const& parent_id = "");
+      button(core::support::duktape& duk, widget* parent);
       virtual ~button() = default;
     };
   }
@@ -30,3 +30,4 @@ namespace core {
 
 
 #endif /* INCLUDE_CORE_UI_SELECTION_BUTTON_H_ */
+
