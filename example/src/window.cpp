@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
   core::ui::container* x = core::ui::container::parse_config(json);
 
   auto widgets = x->get_all_widgets();
-  std::sort(widgets.begin(), widgets.end(), core::ui::widget::compare_front_to_back);
+  std::sort(widgets.begin(), widgets.end(), core::ui::widget::compare_back_to_front);
 
   // get all necessary objects
   core::vao vao;
@@ -148,6 +148,10 @@ int main(int argc, char** argv) {
   glm::highp_mat4x4 world_matrix(glm::ortho<float>(0, WINDOW_SIZE_X, WINDOW_SIZE_Y, 0, -1.0f, 10000.0f));
   glProgramUniformMatrix4fv(shader.get_program_name(), world_matrix_id, 1, GL_FALSE, &world_matrix[0][0]);
 
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+  glEnable (GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glClearColor(0.1, 0.1, 0.1, 0.0);
   do {
     glfwPollEvents();
