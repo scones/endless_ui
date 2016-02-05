@@ -155,6 +155,7 @@ int main(int argc, char** argv) {
 
     auto s = shader.activate();
     auto v = vao.activate();
+
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
     window.swap_buffers();
