@@ -4,9 +4,9 @@
   "position_x": 30,
   "position_y": 100,
   "state": 1,
-  "background_color":  "70000000",
-  "active_color":      "a7a7a700",
-  "focus_color":       "b7b7b700",
+  "background_color":  "7000007f",
+  "active_color":      "a7a7a77f",
+  "focus_color":       "b7b7b77f",
   "size_x": 300,
   "size_y": 300,
   "children": [
@@ -17,21 +17,21 @@
       "position_y": 20,
       "size_x": 100,
       "size_y": 50,
-      "background_color":  "007f0000",
-      "active_color":      "00c70000",
-      "focus_color":       "00a70000",
+      "background_color":  "007f007f",
+      "active_color":      "00c7007f",
+      "focus_color":       "00a7007f",
       "state": 1
     },
     {
       "id": "hidden_button",
       "type": "button",
-      "position_x": 18,
-      "position_y": 18,
-      "size_x": 1,
-      "size_y": 1,
-      "background_color":  "003f3f00",
-      "active_color":      "00a7a700",
-      "focus_color":       "007f7f00",
+      "position_x": 15,
+      "position_y": 15,
+      "size_x": 5,
+      "size_y": 5,
+      "background_color":  "003f3f7f",
+      "active_color":      "00a7a77f",
+      "focus_color":       "007f7f7f",
       "state": 1
     },
     {
@@ -41,9 +41,9 @@
       "position_y": 140,
       "size_x": 100,
       "size_y": 50,
-      "background_color":  "ff000000",
-      "active_color":      "ff7f7f00",
-      "focus_color":       "ff3f3f00",
+      "background_color":  "ff00007f",
+      "active_color":      "ff7f7f7f",
+      "focus_color":       "ff3f3f7f",
       "state": 1
     }
   ]
