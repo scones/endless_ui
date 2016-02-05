@@ -88,6 +88,15 @@ int main(int argc, char** argv) {
 
   auto widgets = x->get_all_widgets();
   std::sort(widgets.begin(), widgets.end(), core::ui::widget::compare_back_to_front);
+  std::vector<core::ui::widget::fvec3> vertices;
+  std::vector<core::ui::widget::fvec4> colors;
+  for (auto widget : widgets) {
+    auto widget_vertices = widget->get_coordinates_ccw_3d();
+    auto color = widget->get_current_color();
+    vertices.insert(vertices.end(), widget_vertices.begin(), widget_vertices.end());
+    for (std::uint32_t i(0); i < widget_vertices.size(); ++i)
+      colors.push_back(color);
+  }
 
   // get all necessary objects
   core::vao vao;
@@ -99,50 +108,36 @@ int main(int argc, char** argv) {
     },
     {"world_matrix"}
   });
-  std::vector<core::buffer*> buffers;
-  std::vector<core::vao*> vaos;
+  core::buffer buffer(BUFFER::MAX);
 
   // initialize the objects
   shader.init();
+  vao.init();
   {
-    for (std::uint32_t i(0); i < widgets.size(); ++i) {
-      core::vao* pvao = new core::vao;
-      pvao->init();
-      auto v = pvao->activate();
-      vaos.push_back(pvao);
-      // build buffer
-      auto pbuffer = new core::buffer(BUFFER::MAX);
-      pbuffer->init();
+    auto v = vao.activate();
+    buffer.init();
+    buffer.data(ATTRIBUTES::POSITION, sizeof(core::ui::widget::fvec3) * vertices.size(), nullptr, GL_STATIC_DRAW);
+    buffer.data(ATTRIBUTES::COLOR, sizeof(core::ui::widget::fvec4) * vertices.size(), nullptr, GL_STATIC_DRAW);
 
-      // fill buffer
-      auto vertices = widgets[i]->get_coordinates_ccw_3d();
-      auto color = widgets[i]->get_current_color();
-      std::vector<core::ui::widget::fvec4> color_data;
-      color_data.resize(vertices.size(), color);
-      pbuffer->data(ATTRIBUTES::POSITION, sizeof(core::ui::widget::fvec3) * vertices.size(), nullptr, GL_STATIC_DRAW);
-      pbuffer->data(ATTRIBUTES::COLOR, sizeof(core::ui::widget::fvec4) * vertices.size(), nullptr, GL_STATIC_DRAW);
-      void* pmemory = pbuffer->map(ATTRIBUTES::POSITION, GL_WRITE_ONLY);
-      std::memcpy(pmemory, vertices.data(), sizeof(core::ui::widget::fvec3) * vertices.size());
-      pbuffer->unmap(ATTRIBUTES::POSITION);
-      pmemory = pbuffer->map(ATTRIBUTES::COLOR, GL_WRITE_ONLY);
-      std::memcpy(pmemory, color_data.data(), sizeof(color) * color_data.size());
-      pbuffer->unmap(ATTRIBUTES::COLOR);
+    // fill the buffers
+    void* pmemory = buffer.map(ATTRIBUTES::POSITION, GL_WRITE_ONLY);
+    std::memcpy(pmemory, vertices.data(), sizeof(core::ui::widget::fvec3) * vertices.size());
+    buffer.unmap(ATTRIBUTES::POSITION);
+    pmemory = buffer.map(ATTRIBUTES::COLOR, GL_WRITE_ONLY);
+    std::memcpy(pmemory, colors.data(), sizeof(core::ui::widget::fvec4) * colors.size());
+    buffer.unmap(ATTRIBUTES::COLOR);
 
-      // init vao with format
-      glVertexAttribBinding(ATTRIBUTES::POSITION, BINDINGS::PRIMARY);
-      glVertexAttribFormat(ATTRIBUTES::POSITION, 3, GL_FLOAT, GL_FALSE, 0);
+    // init vao with format
+    glVertexAttribBinding(ATTRIBUTES::POSITION, BINDINGS::PRIMARY);
+    glVertexAttribFormat(ATTRIBUTES::POSITION, 3, GL_FLOAT, GL_FALSE, 0);
 
-      glVertexAttribBinding(ATTRIBUTES::COLOR, BINDINGS::SECONDARY);
-      glVertexAttribFormat(ATTRIBUTES::COLOR, 4, GL_FLOAT, GL_FALSE, 0);
+    glVertexAttribBinding(ATTRIBUTES::COLOR, BINDINGS::SECONDARY);
+    glVertexAttribFormat(ATTRIBUTES::COLOR, 4, GL_FLOAT, GL_FALSE, 0);
 
-      glEnableVertexAttribArray(ATTRIBUTES::POSITION);
-      glEnableVertexAttribArray(ATTRIBUTES::COLOR);
-      glBindVertexBuffer(BINDINGS::PRIMARY, pbuffer->get_name(BUFFER::POSITION), 0, sizeof(core::ui::widget::fvec3));
-      glBindVertexBuffer(BINDINGS::SECONDARY, pbuffer->get_name(BUFFER::COLOR), 0, sizeof(core::ui::widget::fvec4));
-
-      // store buffer
-      buffers.push_back(pbuffer);
-    }
+    glEnableVertexAttribArray(ATTRIBUTES::POSITION);
+    glEnableVertexAttribArray(ATTRIBUTES::COLOR);
+    glBindVertexBuffer(BINDINGS::PRIMARY, buffer.get_name(BUFFER::POSITION), 0, sizeof(core::ui::widget::fvec3));
+    glBindVertexBuffer(BINDINGS::SECONDARY, buffer.get_name(BUFFER::COLOR), 0, sizeof(core::ui::widget::fvec4));
   }
   auto world_matrix_id = shader.get_uniform_location("world_matrix");
   glm::highp_mat4x4 world_matrix(glm::ortho<float>(0, WINDOW_SIZE_X, WINDOW_SIZE_Y, 0, -1.0f, 10000.0f));
@@ -159,10 +154,8 @@ int main(int argc, char** argv) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     auto s = shader.activate();
-    for (std::uint32_t i(0); i < vaos.size(); ++i) {
-      auto v = vaos[i]->activate();
-      glDrawArrays(GL_TRIANGLES, 0, 6);
-    }
+    auto v = vao.activate();
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
     window.swap_buffers();
   } while (!window.should_close());
