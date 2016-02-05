@@ -1,6 +1,12 @@
-out vec3 color;
+out vec4 color;
+
+
+in block {
+  vec4 vertex_color;
+} In;
+
 
 void main(){
-    color = vec3(1,0,0);
+    color = In.vertex_color;
 }
 

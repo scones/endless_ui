@@ -30,6 +30,7 @@ namespace {
   namespace BUFFER {
     enum {
       POSITION = 0,
+      COLOR,
       MAX
     };
   }
@@ -37,6 +38,7 @@ namespace {
   namespace ATTRIBUTES {
     enum {
       POSITION = 0,
+      COLOR,
       MAX
     };
   }
@@ -44,6 +46,7 @@ namespace {
   namespace BINDINGS {
     enum {
       PRIMARY = 0,
+      SECONDARY,
       MAX
     };
   }
@@ -113,16 +116,29 @@ int main(int argc, char** argv) {
 
       // fill buffer
       auto vertices = widgets[i]->get_coordinates_ccw_3d();
-      pbuffer->data(ATTRIBUTES::POSITION, sizeof(core::ui::widget::fvec3) * vertices.size(), 0, GL_STATIC_DRAW);
+      auto color = widgets[i]->get_current_color();
+      std::vector<core::ui::widget::fvec4> color_data;
+      color_data.resize(vertices.size(), color);
+      pbuffer->data(ATTRIBUTES::POSITION, sizeof(core::ui::widget::fvec3) * vertices.size(), nullptr, GL_STATIC_DRAW);
+      pbuffer->data(ATTRIBUTES::COLOR, sizeof(core::ui::widget::fvec4) * vertices.size(), nullptr, GL_STATIC_DRAW);
       void* pmemory = pbuffer->map(ATTRIBUTES::POSITION, GL_WRITE_ONLY);
       std::memcpy(pmemory, vertices.data(), sizeof(core::ui::widget::fvec3) * vertices.size());
       pbuffer->unmap(ATTRIBUTES::POSITION);
+      pmemory = pbuffer->map(ATTRIBUTES::COLOR, GL_WRITE_ONLY);
+      std::memcpy(pmemory, color_data.data(), sizeof(color) * color_data.size());
+      pbuffer->unmap(ATTRIBUTES::COLOR);
 
       // init vao with format
       glVertexAttribBinding(ATTRIBUTES::POSITION, BINDINGS::PRIMARY);
-      glVertexAttribFormat(ATTRIBUTES::POSITION, 4, GL_FLOAT, GL_FALSE, 0);
+      glVertexAttribFormat(ATTRIBUTES::POSITION, 3, GL_FLOAT, GL_FALSE, 0);
+
+      glVertexAttribBinding(ATTRIBUTES::COLOR, BINDINGS::SECONDARY);
+      glVertexAttribFormat(ATTRIBUTES::COLOR, 4, GL_FLOAT, GL_FALSE, 0);
+
       glEnableVertexAttribArray(ATTRIBUTES::POSITION);
+      glEnableVertexAttribArray(ATTRIBUTES::COLOR);
       glBindVertexBuffer(BINDINGS::PRIMARY, pbuffer->get_name(BUFFER::POSITION), 0, sizeof(core::ui::widget::fvec3));
+      glBindVertexBuffer(BINDINGS::SECONDARY, pbuffer->get_name(BUFFER::COLOR), 0, sizeof(core::ui::widget::fvec4));
 
       // store buffer
       buffers.push_back(pbuffer);

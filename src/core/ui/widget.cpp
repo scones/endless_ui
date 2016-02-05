@@ -45,32 +45,26 @@ namespace core {
 
 
     std::uint32_t widget::s_widget_count = 0;
-    const std::vector<std::string>  widget::c_mandatory_attributes = {
-      "id",
-      "position_x",
-      "position_y",
-      "color",
-      "size_x",
-      "size_y",
-      "type"
-    };
 
 
     widget::widget()
       :
-        m_color(),
+        m_background_color(),
+        m_focus_color(),
+        m_active_color(),
         m_position(),
         m_size(),
         m_id(0),
         m_parent_id(0),
         m_layer(0),
-        m_state(ACTIVE)
+        m_is_active(false),
+        m_is_focus(false)
     {
       m_id = ++s_widget_count;
     }
 
 
-    widget::widget(core::support::duktape& duk, widget* parent) : m_color(), m_position(), m_size(), m_parent_id() {
+    widget::widget(core::support::duktape& duk, widget* parent) : m_background_color(), m_focus_color(), m_active_color(), m_position(), m_size(), m_parent_id(), m_is_active(false), m_is_focus(false) {
       for (std::string const& property : this->required_attributes(duk)) {
         if (!duk.has_property(property)) {
           char buffer[1024];
@@ -85,7 +79,18 @@ namespace core {
       m_size.y = duk.get_int_property("size_y");
       m_id = duk.get_string_property("id");
       m_layer = 0;
-      m_state = duk.get_int_property("state");
+
+      if (duk.has_property("background_color")) {
+        m_background_color = convert_color(duk.get_string_property("background_color"));
+      }
+
+      if (duk.has_property("focus_color")) {
+        m_focus_color = convert_color(duk.get_string_property("focus_color"));
+      }
+
+      if (duk.has_property("active_color")) {
+        m_active_color = convert_color(duk.get_string_property("active_color"));
+      }
 
       if (parent) {
         m_parent_id = parent->get_id();
@@ -119,7 +124,6 @@ namespace core {
         "id",
         "position_x",
         "position_y",
-        "color",
         "size_x",
         "size_y",
         "type"
@@ -321,23 +325,21 @@ namespace core {
     }
 
 
-    void widget::set_color(vec4 color) {
-      m_color = color;
-    }
-
-
-    void widget::set_color(std::string const& color_string) {
+    widget::fvec4 widget::convert_color(std::string const& color_string) {
       if (color_string.size() != 8)
         throw core::error::json_error("wrong color format size");
 
-      std::uint32_t color_code = std::stoi(color_string, nullptr, 16);
-      m_color.a = color_code % 0x100;
+      fvec4 color;
+      std::uint32_t color_code = std::stoll(color_string, nullptr, 16);
+      color.a = float(color_code % 0x100) / float(0xff);
       color_code >>= 8;
-      m_color.b = color_code % 0x100;
+      color.b = float(color_code % 0x100) / float(0xff);
       color_code >>= 8;
-      m_color.g = color_code % 0x100;
+      color.g = float(color_code % 0x100) / float(0xff);
       color_code >>= 8;
-      m_color.r = color_code % 0x100;
+      color.r = float(color_code % 0x100) / float(0xff);
+
+      return color;
     }
 
 
@@ -358,13 +360,18 @@ namespace core {
     }
 
 
-    void widget::set_state(std::uint32_t state) {
-      m_state = state;
+    widget::t_widget_vector widget::get_all_widgets() {
+      return t_widget_vector({this});
     }
 
 
-    widget::t_widget_vector widget::get_all_widgets() {
-      return t_widget_vector({this});
+    widget::fvec4 widget::get_current_color() const {
+      if (m_is_active) {
+        return m_active_color;
+      } else if (m_is_focus) {
+        return m_focus_color;
+      }
+      return m_background_color;
     }
 
   }

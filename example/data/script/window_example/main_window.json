@@ -4,7 +4,9 @@
   "position_x": 30,
   "position_y": 100,
   "state": 1,
-  "color": "00000000",
+  "background_color":  "70000000",
+  "active_color":      "a7a7a700",
+  "focus_color":       "b7b7b700",
   "size_x": 300,
   "size_y": 300,
   "children": [
@@ -15,7 +17,9 @@
       "position_y": 20,
       "size_x": 100,
       "size_y": 50,
-      "color": "00ff0000",
+      "background_color":  "007f0000",
+      "active_color":      "00c70000",
+      "focus_color":       "00a70000",
       "state": 1
     },
     {
@@ -25,7 +29,9 @@
       "position_y": 18,
       "size_x": 1,
       "size_y": 1,
-      "color": "007f7f00",
+      "background_color":  "003f3f00",
+      "active_color":      "00a7a700",
+      "focus_color":       "007f7f00",
       "state": 1
     },
     {
@@ -35,7 +41,9 @@
       "position_y": 140,
       "size_x": 100,
       "size_y": 50,
-      "color": "ff0000",
+      "background_color":  "ff000000",
+      "active_color":      "ff7f7f00",
+      "focus_color":       "ff3f3f00",
       "state": 1
     }
   ]

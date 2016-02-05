@@ -59,16 +59,25 @@ namespace core {
       widget& operator=(widget& rhs) = default;
       widget& operator=(widget&&) = default;
 
-      virtual void set_color(vec4 color);
-      virtual void set_color(std::string const& color_string);
+      virtual void set_background_color(vec4 color) { m_background_color = color; }
+      virtual void set_active_color(vec4 color) { m_active_color = color; }
+      virtual void set_focus_color(vec4 color) { m_focus_color = color; }
+      virtual void set_background_color(std::string const& color_string) { m_background_color = convert_color(color_string); }
+      virtual void set_active_color(std::string const& color_string) { m_active_color = convert_color(color_string); }
+      virtual void set_focus_color(std::string const& color_string) { m_focus_color = convert_color(color_string); }
       virtual void set_position(vec2 position);
       virtual void set_size(vec2 size);
       virtual void set_layer(std::uint32_t layer);
-      virtual void set_state(std::uint32_t state);
+      virtual void set_active(bool state) { m_is_active = state; }
+      virtual void set_focus(bool state) { m_is_focus = state; }
 
       std::string const& get_id() const { return m_id; }
       vec2 const& get_absolute_position() const { return m_absolute_position; }
       std::uint32_t get_layer() const { return m_layer; }
+      fvec4 get_background_color() const { return m_background_color; }
+      fvec4 get_focus_color() const { return m_focus_color; }
+      fvec4 get_active_color() const { return m_active_color; }
+      fvec4 get_current_color() const;
 
       virtual std::vector<fvec2> get_coordinates_ccw_2d() const;
       virtual std::vector<fvec3> get_coordinates_ccw_3d() const;
@@ -101,6 +110,7 @@ namespace core {
         m_absolute_position += delta;
       }
 
+      fvec4 convert_color(std::string const& color_string);
 
       static widget* parse_widget(core::support::duktape&, widget* parent = nullptr);
 
@@ -113,17 +123,19 @@ namespace core {
       virtual t_attributes const& required_attributes(core::support::duktape&);
 
 
-      static const t_attributes c_mandatory_attributes;
       static std::uint32_t s_widget_count;
 
-      vec4 m_color;
+      fvec4 m_background_color;
+      fvec4 m_focus_color;
+      fvec4 m_active_color;
       vec2 m_position;
       vec2 m_absolute_position;
       vec2 m_size;
       std::string m_id;
       std::string m_parent_id;
       std::uint32_t m_layer;
-      std::uint32_t m_state;
+      bool m_is_active;
+      bool m_is_focus;
     };
 
   }
