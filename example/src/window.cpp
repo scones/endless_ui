@@ -24,6 +24,18 @@
 #include "core/buffer.h"
 #include "core/shader.h"
 
+#include "core/event/event_handler.h"
+
+
+void global_key_callback(GLFWwindow* window, std::int32_t key, std::int32_t scancode, std::int32_t action, std::int32_t mods);
+void global_window_resize_callback(GLFWwindow* pwindow, std::int32_t width, std::int32_t height);
+void global_window_reposition_callback(GLFWwindow* pwindow, std::int32_t xpos, std::int32_t ypos);
+void global_mouse_button_callback(GLFWwindow* pwindow, std::int32_t button, std::int32_t action, std::int32_t modifiers);
+void global_cursor_position_callback(GLFWwindow* pwindow, double xpos, double ypos);
+void global_scroll_callback(GLFWwindow* pwindow, double xoffset, double yoffset);
+
+
+core::event::event_handler* event_handler = nullptr;
 
 namespace {
 
@@ -51,6 +63,15 @@ namespace {
     };
   }
 
+  namespace EVENTS {
+    enum {
+      MOUSE_BUTTON,
+      MOUSE_MOVE,
+      MOUSE_SCROLL,
+      KEYBOARD_BUTTON
+    };
+  }
+
   const std::uint32_t WINDOW_SIZE_X = 500;
   const std::uint32_t WINDOW_SIZE_Y = 500;
 }
@@ -64,6 +85,8 @@ void glfw_error_callback(std::int32_t error, char const* description) {
 
 
 int main(int argc, char** argv) {
+
+  event_handler = new core::event::event_handler;
 
   // initialize basic like glfw a window and glew
   core::glfw glfw;
@@ -96,6 +119,10 @@ int main(int argc, char** argv) {
     vertices.insert(vertices.end(), widget_vertices.begin(), widget_vertices.end());
     for (std::uint32_t i(0); i < widget_vertices.size(); ++i)
       colors.push_back(color);
+
+    event_handler->bind(EVENTS::MOUSE_BUTTON, widget);
+    event_handler->bind(EVENTS::MOUSE_MOVE, widget);
+    event_handler->bind(EVENTS::MOUSE_SCROLL, widget);
   }
 
   // get all necessary objects
@@ -162,4 +189,30 @@ int main(int argc, char** argv) {
   } while (!window.should_close());
   return 1;
 }
+
+
+void global_key_callback(GLFWwindow* window, std::int32_t key, std::int32_t scancode, std::int32_t action, std::int32_t mods) {
+
+}
+
+void global_window_resize_callback(GLFWwindow* pwindow, std::int32_t width, std::int32_t height) {
+
+}
+
+void global_window_reposition_callback(GLFWwindow* pwindow, std::int32_t xpos, std::int32_t ypos) {
+
+}
+
+void global_mouse_button_callback(GLFWwindow* pwindow, std::int32_t button, std::int32_t action, std::int32_t modifiers) {
+
+}
+
+void global_cursor_position_callback(GLFWwindow* pwindow, double xpos, double ypos) {
+
+}
+
+void global_scroll_callback(GLFWwindow* pwindow, double xoffset, double yoffset) {
+
+}
+
 

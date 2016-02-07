@@ -19,12 +19,14 @@
 
 #include "core/support/duktape.h"
 
+#include "core/event/event_receiver.h"
+
 
 namespace core {
 
   namespace ui {
 
-    class widget {
+    class widget : public core::event::event_receiver {
 
       public:
 
