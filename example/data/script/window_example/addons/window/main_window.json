@@ -1,0 +1,51 @@
+{
+  "id": "main_window",
+  "type": "window",
+  "position_x": 30,
+  "position_y": 100,
+  "state": 1,
+  "background_color":  "700000ff",
+  "active_color":      "a7a7a77f",
+  "focus_color":       "b7b7b77f",
+  "size_x": 300,
+  "size_y": 300,
+  "children": [
+    {
+      "id": "ok_button",
+      "type": "button",
+      "position_x": 20,
+      "position_y": 20,
+      "size_x": 100,
+      "size_y": 50,
+      "background_color":  "007f00ff",
+      "active_color":      "00c7007f",
+      "focus_color":       "00a7007f",
+      "state": 1
+    },
+    {
+      "id": "hidden_button",
+      "type": "button",
+      "position_x": 15,
+      "position_y": 15,
+      "size_x": 5,
+      "size_y": 5,
+      "background_color":  "003f3f7f",
+      "active_color":      "00a7a77f",
+      "focus_color":       "007f7f7f",
+      "state": 1
+    },
+    {
+      "id": "cancel_button",
+      "type": "button",
+      "position_x": 20,
+      "position_y": 140,
+      "size_x": 100,
+      "size_y": 50,
+      "background_color":  "ff00007f",
+      "active_color":      "ff7f7f7f",
+      "focus_color":       "ff3f3f7f",
+      "state": 1
+    }
+  ]
+}
+

@@ -14,6 +14,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
+#include "core/ui/addon.h"
 #include "core/window.h"
 #include "core/glfw.h"
 #include "core/file.h"
@@ -85,6 +86,7 @@ void glfw_error_callback(std::int32_t error, char const* description) {
 
 
 int main(int argc, char** argv) {
+  core::ui::addon::load_addons("data/script/window_example/addons");
 
   event_handler = new core::event::event_handler;
 
@@ -106,10 +108,16 @@ int main(int argc, char** argv) {
   window.make_current();
 
   // parse the widgets from the json
-  auto json = core::file::content("data/script/window_example/main_window.json");
-  core::ui::container* x = core::ui::container::parse_config(json);
+  auto addons = core::ui::addon::load_addons("data/script/window_example/addons");
+  std::vector<core::ui::widget*> widgets;
+  for (auto addon : addons) {
+    auto addon_widgets = addon->get_widgets();
+    for (auto addon_widget : addon_widgets) {
+      auto all_addon_widgets = addon_widget->get_all_widgets();
+      widgets.insert(widgets.end(), all_addon_widgets.begin(), all_addon_widgets.end());
+    }
+  }
 
-  auto widgets = x->get_all_widgets();
   std::sort(widgets.begin(), widgets.end(), core::ui::widget::compare_back_to_front);
   std::vector<core::ui::widget::fvec3> vertices;
   std::vector<core::ui::widget::fvec4> colors;
