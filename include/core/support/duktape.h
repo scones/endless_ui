@@ -53,6 +53,21 @@ namespace core {
       }
 
 
+      static duktape peval_string(std::string const& source) {
+        core::support::duktape duk;
+        duk.push_string(source.c_str());
+        if (0 != duk.peval())
+          throw core::error::duktape_error(std::string("peval failed:") + duk.safe_to_string());
+
+        return duk;
+      }
+
+
+      inline std::uint32_t peval() {
+        return duk_peval(m_context);
+      }
+
+
       inline char const* push_string(std::string const& input) {
         return duk_push_string(m_context, input.c_str());
       }
