@@ -159,6 +159,67 @@ namespace core {
         return duk_safe_to_string(m_context, stack_index);
       }
 
+
+      void set_global_object() {
+        duk_set_global_object(m_context);
+      }
+
+
+      std::int32_t push_object() {
+        return duk_push_object(m_context);
+      }
+
+
+      std::int32_t push_array() {
+        return duk_push_array(m_context);
+      }
+
+
+      void push_boolean(bool value = false) {
+        duk_push_boolean(m_context, (value ? 1 : 0));
+      }
+
+
+      std::int32_t push_c_function(duk_c_function func, std::int32_t argument_count) {
+        return duk_push_c_function(m_context, func, argument_count);
+      }
+
+
+      void push_int(std::int32_t value) {
+        duk_push_int(m_context, value);
+      }
+
+
+      void push_nan() {
+        duk_push_nan(m_context);
+      }
+
+
+      void push_null() {
+        duk_push_null(m_context);
+      }
+
+
+      void push_double(double value) {
+        duk_push_number(m_context, value);
+      }
+
+
+      void push_uint(std::uint32_t value) {
+        duk_push_uint(m_context, value);
+      }
+
+
+      bool put_global_string(std::string const& property_name) {
+        return duk_put_global_string(m_context, property_name.c_str());
+      }
+
+
+      void push_undefined() {
+        duk_push_undefined(m_context);
+      }
+
+
       protected:
 
 
