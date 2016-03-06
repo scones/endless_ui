@@ -64,15 +64,6 @@ namespace {
     };
   }
 
-  namespace EVENTS {
-    enum {
-      MOUSE_BUTTON,
-      MOUSE_MOVE,
-      MOUSE_SCROLL,
-      KEYBOARD_BUTTON
-    };
-  }
-
   const std::uint32_t WINDOW_SIZE_X = 500;
   const std::uint32_t WINDOW_SIZE_Y = 500;
 }
@@ -86,8 +77,6 @@ void glfw_error_callback(std::int32_t error, char const* description) {
 
 
 int main(int argc, char** argv) {
-  core::ui::addon::load_addons("data/script/window_example/addons");
-
   event_handler = new core::event::event_handler;
 
   // initialize basic like glfw a window and glew
@@ -128,9 +117,9 @@ int main(int argc, char** argv) {
     for (std::uint32_t i(0); i < widget_vertices.size(); ++i)
       colors.push_back(color);
 
-    event_handler->bind(EVENTS::MOUSE_BUTTON, widget);
-    event_handler->bind(EVENTS::MOUSE_MOVE, widget);
-    event_handler->bind(EVENTS::MOUSE_SCROLL, widget);
+    event_handler->bind("mouse_button", widget);
+    event_handler->bind("mouse_move", widget);
+    event_handler->bind("mouse_scroll", widget);
   }
 
   // get all necessary objects
