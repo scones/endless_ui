@@ -96,8 +96,20 @@ int main(int argc, char** argv) {
   window.init();
   window.make_current();
 
+  // load resources relatively to program position
   // parse the widgets from the json
-  auto addons = core::ui::addon::load_addons("data/script/window_example/addons");
+  std::string program_path(argv[0]);
+  auto position = program_path.find_last_of("/\\");
+  std::string path = program_path.substr(0, position);
+  std::string addon_path = path;
+#ifdef _WIN64
+  addon_path += "\\data\\script\\window_example\\addons";
+#else
+  addon_path += "/data/script/window_example/addons";
+#endif
+  std::cout << path << std::endl;
+  auto addons = core::ui::addon::load_addons(addon_path);
+
   std::vector<core::ui::widget*> widgets;
   for (auto addon : addons) {
     auto addon_widgets = addon->get_widgets();
@@ -123,12 +135,19 @@ int main(int argc, char** argv) {
   }
 
   // get all necessary objects
+  std::string shader_path = path;
+#ifdef _WIN64
+  shader_path += std::string("\\data\\shader\\");
+#else
+  shader_path += std::string("/data/shader/");
+#endif
+  std::cout << shader_path << std::endl;
   core::vao vao;
   core::shader shader({
     450,
     {
-      {GL_VERTEX_SHADER, "widget"},
-      {GL_FRAGMENT_SHADER, "widget"}
+      {GL_VERTEX_SHADER, shader_path + "widget"},
+      {GL_FRAGMENT_SHADER, shader_path + "widget"}
     },
     {"world_matrix"}
   });
