@@ -1,6 +1,6 @@
 CC             = g++
 
-INCLUDES       = -Iinclude -I../include -I/c/msys64/mingw64/include -I/c/msys64/mingw64/x86_64-w64-mingw32/include
+INCLUDES       = -Iinclude -I../include -I../external/endless_events/include -I/c/msys64/mingw64/include -I/c/msys64/mingw64/x86_64-w64-mingw32/include
 EXECUTABLE_SUFFIX = 
 ifeq ($(MSYSTEM), MINGW64)
 	EXECUTABLE_SUFFIX = .exe

@@ -1,5 +1,5 @@
 CC             = g++
-INCLUDES       = -Iinclude
+INCLUDES       = -Iinclude -Iexternal/endless_events/include
 CFLAGS         = $(INCLUDES) -c -Wall -pedantic -std=c++14 -fexec-charset=UTF-8 -finput-charset=UTF-8 -fdiagnostics-color=auto
 ifdef RELEASE
   CFLAGS += -O2
