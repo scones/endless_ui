@@ -237,7 +237,11 @@ namespace core {
       {GL_COMPUTE_SHADER, ".c"}
     });
 
-    return (std::string("data/shader/") + shader_name + s_suffix_map.at((unsigned int)type));
+    if (std::string::npos == shader_name.find_first_of("/\\")) {
+      return (std::string("data/shader/") + shader_name + s_suffix_map.at((unsigned int)type));
+    } else {
+      return (shader_name + s_suffix_map.at((unsigned int)type));
+    }
   }
 
 
